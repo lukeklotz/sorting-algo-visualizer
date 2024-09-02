@@ -1,0 +1,46 @@
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;    
+    margin: 0;
+    padding: 30px;
+    overflow: hidden;
+    height: 100vh; 
+}
+
+.button-container{
+    display: flex;
+    padding-bottom: 50px;
+}
+
+#circle-container {
+    display: grid;
+    gap: 0px; /* No gap between circles */
+    height: 50vh; /* Set a smaller height for the container */
+    width: 50vw;  /* Set a smaller width for the container */
+    padding: 3px;
+}
+
+.circle{
+    /* width: 100px; */
+    /* height: 100px; */
+    background-color: none;
+    border: none;
+    border-radius: 50%;
+}
+
+.circle:hover{
+    background-color: orangered;
+}
+
+#number-of-operations{
+    color: white;
+    margin: none;
+}
+
+#operations-text{
+    color: white;
+    margin: none;
+}
