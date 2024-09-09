@@ -1,7 +1,3 @@
-/******
-
-
-
 const circleContainer = document.getElementById('circle-container');
 const shuffleButton = document.getElementById('shuffle-button');
 const selectionSortButton = document.getElementById("selection-sort");
@@ -44,7 +40,7 @@ async function bubbleSortByBrightness(circles, i, j, delay_ms) {
     if (j >= circles.length - i - 1) {
         // Move to the next iteration
         await new Promise(resolve => setTimeout(resolve, delay_ms)); // Adjust delay as needed
-        bubbleSortByBrightness(circles, i + 1, 0);
+        bubbleSortByBrightness(circles, i + 1, 0, delay_ms);
         return;
     }
 
@@ -135,7 +131,7 @@ async function shuffleCircles(totalCircles, circles){
 async function fillScreenWithCircles(circles) {
 
     console.log("fill screen with circles called")
-    circleContainer.innerHTML = 
+    circleContainer.innerHTML = '' 
     circles.length = 0;
 
     const containerWidth = parseFloat(getComputedStyle(circleContainer).width);
@@ -178,7 +174,7 @@ if(shuffleButton){
 if(selectionSortButton){
     selectionSortButton.addEventListener('click', async() => {
         isDoneSorting = false;
-        await selectionSortByBrightness(circles, 0, 0, 10)
+        await selectionSortByBrightness(circles, 0, 10)
         numberOfOperations = 0;
     });
 }
