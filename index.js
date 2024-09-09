@@ -4,8 +4,10 @@ const selectionSortButton = document.getElementById("selection-sort");
 const bubbleSortButton = document.getElementById("bubble-sort");
 const numberOfOperationsElement = document.getElementById('number-of-operations');
 
-let circles = []
+let circles = [];
 let numberOfOperations = 0;
+
+let isDoneSorting = false;
 
 function updateNumberOfOperations() {
     numberOfOperations++;
@@ -19,11 +21,10 @@ function createCircle() {
     circle.style.borderRadius = '50%'; // Makes the div a circle
     circle.style.margin = '0px'; // No margin
    
-    // Generate a random brightness value between 30% and 80%
-    const brightness = Math.floor(Math.random() * (80 - 30 + 1)) + 30;
-    const hue = 10;  
+    const brightness = Math.floor(Math.random() * (80) + 10);
+    const hue = 200;  
     
-    circle.style.backgroundColor = `hsl(${hue}, 100%, ${brightness}%)`;
+    circle.style.backgroundColor = `hsl(${hue}, 5%, ${brightness}%)`;
 
     circle.dataset.brightness = brightness;
 
@@ -31,8 +32,11 @@ function createCircle() {
 }
 
 async function bubbleSortByBrightness(circles, i, j, delay_ms) {
-    if (i >= circles.length - 1) return;
-
+    if (i >= circles.length - 1) {
+        console.log("bubble sort done!") 
+        isDoneSorting = true;
+        return;
+    }  
     if (j >= circles.length - i - 1) {
         // Move to the next iteration
         await new Promise(resolve => setTimeout(resolve, delay_ms)); // Adjust delay as needed
@@ -61,8 +65,10 @@ async function bubbleSortByBrightness(circles, i, j, delay_ms) {
 
 async function selectionSortByBrightness(circles, i, delay_ms) {
     const len = circles.length;
-    if (i >= len - 1) return;
-    
+    if (i >= len - 1) {
+        isDoneSorting = true;
+        return;
+    }
     numberOfOperations++;
     console.log(numberOfOperations)
     
@@ -101,7 +107,10 @@ async function appendCircleWithDelay(circle, delay) {
     circleContainer.appendChild(circle);
 }
 
-function fillArray(totalCircles, circles){
+//fills the array with circles
+//this function calls createCircle() to fill the array with circle "objects"
+//it then pushes the object onto the circles array
+async function fillArray(totalCircles, circles){
     circles.length = 0 // clear all existing elements
     for (let i = 0; i < totalCircles; i++) {
         const circle = createCircle();
@@ -110,16 +119,18 @@ function fillArray(totalCircles, circles){
 }
 
 async function shuffleCircles(totalCircles, circles){
+
+        const hue = 200;
         for (let i = 0; i < totalCircles; i++){
-            const brightness = Math.floor(Math.random() * (80 - 30 + 1)) + 30;
-            const hue = 10;
-            circles[i].style.backgroundColor =  `hsl(${hue}, 100%, ${brightness}%)`;
+            const brightness = Math.floor(Math.random() * (80) + 10);
+            circles[i].style.backgroundColor =  `hsl(${hue}, 5%, ${brightness}%)`;
             circles[i].dataset.brightness = brightness;
         }
 }
 
 async function fillScreenWithCircles(circles) {
 
+    console.log("fill screen with circles called")
     circleContainer.innerHTML = '';
     circles.length = 0;
 
@@ -145,11 +156,7 @@ async function fillScreenWithCircles(circles) {
 
     for (let i = 0; i < totalCircles; i++) {
             const circle = circles[i]
-            if(circle instanceof Node){
-                await appendCircleWithDelay(circle, 10);
-            } else {
-                console.error('Invalid node encountered', circle)
-            }
+            await appendCircleWithDelay(circle, 10);
     } 
 }
 
@@ -157,23 +164,30 @@ fillScreenWithCircles(circles);
 
 if(shuffleButton){
     shuffleButton.addEventListener('click', async() => {
-        totalCircles = circles.length
-        numberOfOperations = 0;
-        await shuffleCircles(totalCircles, circles)
+        if(!isDoneSorting){
+            alert("not done sorting!!")
+            console.log(isDoneSorting)
+        }
+        else if(isDoneSorting){
+            totalCircles = circles.length
+            numberOfOperations = 0;
+            await shuffleCircles(totalCircles, circles)
+        }
     })
 }
 
 if(selectionSortButton){
     selectionSortButton.addEventListener('click', async() => {
+        isDoneSorting = false;
         await selectionSortByBrightness(circles, 0, 0, 10)
         numberOfOperations = 0;
     });
 }
 if(bubbleSortButton){
     bubbleSortButton.addEventListener('click', async() => {
-            await bubbleSortByBrightness(circles, 0, 0, 10)
-            console.log("bubble sort clicked!")     
-            numberOfOperations = 0;
+        isDoneSorting = false;
+        await bubbleSortByBrightness(circles, 0, 0, 10)
+        numberOfOperations = 0;
     });
 }
 

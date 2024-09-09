@@ -1,7 +1,6 @@
 body {
     background-color: black;
     display: flex;
-    justify-content: center; 
     flex-direction: column;
     align-items: center;    
     margin: 0;
@@ -10,9 +9,35 @@ body {
     height: 100vh; 
 }
 
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Roboto-Mono", monospace;
+    font-size: 5vh;
+    margin: none;
+}
+
 .button-container{
     display: flex;
-    padding-bottom: 50px;
+}
+
+.btn{
+    border: 3px solid white;
+    padding: 15px;
+    border-radius: 80px;
+    color: white;
+    background-color: black;
+    font-family: "Roboto-Mono", monospace;
+    font-size: large;
+    
+}
+
+.btn:hover{
+    cursor: crosshair;
+    background-color: blue;
+    color: black
 }
 
 #circle-container {
@@ -24,23 +49,25 @@ body {
 }
 
 .circle{
-    /* width: 100px; */
-    /* height: 100px; */
     background-color: none;
-    border: none;
     border-radius: 50%;
 }
 
 .circle:hover{
-    background-color: orangered;
+    background-color: rgb(255, 68, 0);
 }
 
 #number-of-operations{
     color: white;
+    border: 3px solid white;
+    padding: 15px;
+    border-radius: 30px;
     margin: none;
 }
 
 #operations-text{
+
+    font-family: "Roboto-Mono", monospace;
     color: white;
     margin: none;
 }
