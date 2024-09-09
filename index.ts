@@ -8,10 +8,12 @@ let circles = [];
 let numberOfOperations = 0;
 
 let isDoneSorting = false;
-
+let sorted = false;
 function updateNumberOfOperations() {
     numberOfOperations++;
-    numberOfOperationsElement.innerText = numberOfOperations;
+    if(numberOfOperationsElement){
+        numberOfOperationsElement.innerText = numberOfOperations.toString();
+    }
 }
 
 
@@ -26,7 +28,7 @@ function createCircle() {
     
     circle.style.backgroundColor = `hsl(${hue}, 5%, ${brightness}%)`;
 
-    circle.dataset.brightness = brightness;
+    circle.dataset.brightness = brightness.toString();
 
     return circle;
 }
@@ -60,18 +62,16 @@ async function bubbleSortByBrightness(circles, i, j, delay_ms) {
 
     // Continue with the next pair
     await new Promise(resolve => setTimeout(resolve, delay_ms)); // Adjust delay as needed
-    bubbleSortByBrightness(circles, i, j + 1);
+    bubbleSortByBrightness(circles, i, j + 1, delay_ms);
 }
 
 async function selectionSortByBrightness(circles, i, delay_ms) {
     const len = circles.length;
-    if (i >= len - 1) {
-        isDoneSorting = true;
-        return;
-    }
-    numberOfOperations++;
-    console.log(numberOfOperations)
-    
+
+    //selection sort complete -- return
+    if (i >= len - 1) return;
+
+    numberOfOperations++; 
     // Find the index of the minimum element in the unsorted part
     let minIndex = i;
     for (let j = i + 1; j < len; j++) {
@@ -104,13 +104,16 @@ function sleep(delay_ms) {
 async function appendCircleWithDelay(circle, delay) {
     
     await sleep(delay); // Wait for the specified delay
-    circleContainer.appendChild(circle);
+    if(circleContainer){
+        circleContainer.appendChild(circle);
+    }
 }
 
 //fills the array with circles
 //this function calls createCircle() to fill the array with circle "objects"
 //it then pushes the object onto the circles array
 async function fillArray(totalCircles, circles){
+    console.log("fill array with circles called")
     circles.length = 0 // clear all existing elements
     for (let i = 0; i < totalCircles; i++) {
         const circle = createCircle();
@@ -161,28 +164,44 @@ if(shuffleButton){
     shuffleButton.addEventListener('click', async() => {
         if(!isDoneSorting){
             alert("not done sorting!!")
-            console.log(isDoneSorting)
         }
-        else if(isDoneSorting){
-            totalCircles = circles.length
+        else if(isDoneSorting && sorted){ 
+            let totalCircles = circles.length
             numberOfOperations = 0;
             await shuffleCircles(totalCircles, circles)
+            sorted = false;
         }
     })
 }
 
 if(selectionSortButton){
     selectionSortButton.addEventListener('click', async() => {
+        if(sorted){
+            alert("already sorted! Try shuffling.")
+        } else {
+            
         isDoneSorting = false;
         await selectionSortByBrightness(circles, 0, 10)
+        isDoneSorting = true;
+        sorted = true;
         numberOfOperations = 0;
+
+        }
     });
 }
 if(bubbleSortButton){
     bubbleSortButton.addEventListener('click', async() => {
+        if(sorted){
+            alert("already sorted! Try shuffling.")
+        } else {
+
         isDoneSorting = false;
         await bubbleSortByBrightness(circles, 0, 0, 10)
+        isDoneSorting = true;
+        sorted = true;
         numberOfOperations = 0;
+
+        }
     });
 }
 
