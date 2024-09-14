@@ -9,13 +9,13 @@ let numberOfOperations = 0;
 
 let isDoneSorting = false;
 let sorted = false;
+
 function updateNumberOfOperations() {
     numberOfOperations++;
     if(numberOfOperationsElement){
         numberOfOperationsElement.innerText = numberOfOperations.toString();
     }
 }
-
 
 function createCircle() {
     const circle = document.createElement('div');
@@ -34,6 +34,8 @@ function createCircle() {
 }
 
 async function bubbleSortByBrightness(circles, i, j, delay_ms) {
+
+    // bubble sort done -- return
     if (i >= circles.length - 1) {
         console.log("bubble sort done!") 
         isDoneSorting = true;
@@ -69,8 +71,10 @@ async function selectionSortByBrightness(circles, i, delay_ms) {
     const len = circles.length;
 
     //selection sort complete -- return
-    if (i >= len - 1) return;
-
+    if (i >= len - 1) {
+     isDoneSorting = true;
+     return;
+    }
     numberOfOperations++; 
     // Find the index of the minimum element in the unsorted part
     let minIndex = i;
@@ -140,7 +144,7 @@ async function fillScreenWithCircles(circles) {
     const containerWidth = parseFloat(getComputedStyle(circleContainer).width);
     const containerHeight = parseFloat(getComputedStyle(circleContainer).height);
 
-    const circleSize = 80;
+    const circleSize = 50;
     
     const columns = Math.floor(containerWidth / circleSize); // Approximate number of circles per row
     const rows = Math.floor(containerHeight / circleSize);   // Approximate number of circles per column
@@ -182,7 +186,6 @@ if(selectionSortButton){
             
         isDoneSorting = false;
         await selectionSortByBrightness(circles, 0, 10)
-        isDoneSorting = true;
         sorted = true;
         numberOfOperations = 0;
 
@@ -196,8 +199,9 @@ if(bubbleSortButton){
         } else {
 
         isDoneSorting = false;
-        await bubbleSortByBrightness(circles, 0, 0, 10)
-        isDoneSorting = true;
+        console.log(isDoneSorting)
+        await bubbleSortByBrightness(circles, 0, 0, 1)
+        console.log(isDoneSorting)
         sorted = true;
         numberOfOperations = 0;
 
