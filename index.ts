@@ -30,11 +30,18 @@ function createCircle() {
 
     circle.dataset.brightness = brightness.toString();
 
-    return circle;
+    
+    if (circle.style.height == circle.style.width) {
+        return circle;
+    }
+    return null;
 }
 
 async function bubbleSort(circles, i, j, delay_ms) {
 
+    if (circleContainer == null){
+        return null;
+    }
     // bubble sort done -- return
     if (i >= circles.length - 1) {
         console.log("bubble sort done!") 
@@ -67,6 +74,12 @@ async function bubbleSort(circles, i, j, delay_ms) {
 }
 
 async function selectionSortByBrightness(circles, i, delay_ms) {
+
+    if (circleContainer == null){
+        return null;
+    }
+
+    console.log(circles);
     const len = circles.length;
 
     //selection sort complete -- return
@@ -107,6 +120,7 @@ function sleep(delay_ms) {
 async function appendCircleWithDelay(circle, delay) {
     
     await sleep(delay); // Wait for the specified delay
+
     if(circleContainer){
         circleContainer.appendChild(circle);
     }
@@ -139,7 +153,7 @@ async function fillScreenWithCircles(circles) {
     if (circleContainer === null) {
         return null;
     }
-    console.log("fill screen with circles called")
+
     circleContainer.innerHTML = '' 
     circles.length = 0;
 
@@ -214,5 +228,6 @@ if(bubbleSortButton){
 
 // Recalculate on window resize to keep circles perfectly fitted
 window.addEventListener('resize', () => {
+    console.log('Window resized to:', window.innerWidth, window.innerHeight);
     fillScreenWithCircles(circles);
 });

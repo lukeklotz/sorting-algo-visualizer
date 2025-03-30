@@ -45,7 +45,7 @@ body {
     gap: 0px; /* No gap between circles */
     height: 50vh; /* Set a smaller height for the container */
     width: 50vw;  /* Set a smaller width for the container */
-    padding: 3px;
+    padding: 0;
 }
 
 .circle{
