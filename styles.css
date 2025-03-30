@@ -62,7 +62,7 @@ body {
     border: 3px solid white;
     padding: 15px;
     border-radius: 30px;
-    margin: none;
+    margin: 1px;
 }
 
 #operations-text{
@@ -70,4 +70,9 @@ body {
     font-family: "Roboto-Mono", monospace;
     color: white;
     margin: none;
+}
+
+#about {
+  font-family: "Roboto-Mono", monospace;
+  color: white;
 }

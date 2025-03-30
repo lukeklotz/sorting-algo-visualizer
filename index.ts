@@ -33,7 +33,7 @@ function createCircle() {
     return circle;
 }
 
-async function bubbleSortByBrightness(circles, i, j, delay_ms) {
+async function bubbleSort(circles, i, j, delay_ms) {
 
     // bubble sort done -- return
     if (i >= circles.length - 1) {
@@ -43,8 +43,8 @@ async function bubbleSortByBrightness(circles, i, j, delay_ms) {
     }  
     if (j >= circles.length - i - 1) {
         // Move to the next iteration
-        await new Promise(resolve => setTimeout(resolve, delay_ms)); // Adjust delay as needed
-        bubbleSortByBrightness(circles, i + 1, 0, delay_ms);
+        await new Promise(resolve => setTimeout(resolve, delay_ms)); //delay is needed to see changes
+        bubbleSort(circles, i + 1, 0, delay_ms);
         return;
     }
 
@@ -62,9 +62,8 @@ async function bubbleSortByBrightness(circles, i, j, delay_ms) {
         updateNumberOfOperations();
     }
 
-    // Continue with the next pair
-    await new Promise(resolve => setTimeout(resolve, delay_ms)); // Adjust delay as needed
-    bubbleSortByBrightness(circles, i, j + 1, delay_ms);
+    await new Promise(resolve => setTimeout(resolve, delay_ms)); 
+    bubbleSort(circles, i, j + 1, delay_ms);
 }
 
 async function selectionSortByBrightness(circles, i, delay_ms) {
@@ -137,6 +136,9 @@ async function shuffleCircles(totalCircles, circles){
 
 async function fillScreenWithCircles(circles) {
 
+    if (circleContainer === null) {
+        return null;
+    }
     console.log("fill screen with circles called")
     circleContainer.innerHTML = '' 
     circles.length = 0;
@@ -144,13 +146,13 @@ async function fillScreenWithCircles(circles) {
     const containerWidth = parseFloat(getComputedStyle(circleContainer).width);
     const containerHeight = parseFloat(getComputedStyle(circleContainer).height);
 
-    const circleSize = 50;
+    const circleSize = (containerWidth + containerHeight) / 25;
     
     const columns = Math.floor(containerWidth / circleSize); // Approximate number of circles per row
     const rows = Math.floor(containerHeight / circleSize);   // Approximate number of circles per column
      
-    circleContainer.style.gridTemplateColumns = `repeat(${columns}, ${circleSize}px)`;
-    circleContainer.style.gridTemplateRows = `repeat(${rows}, ${circleSize}px)`;
+    circleContainer.style.gridTemplateColumns = `repeat(${columns}, ${circleSize}px`;
+    circleContainer.style.gridTemplateRows = `repeat(${rows}, ${circleSize}px`;
 
     const totalCircles = columns * rows;
 
@@ -200,7 +202,7 @@ if(bubbleSortButton){
 
         isDoneSorting = false;
         console.log(isDoneSorting)
-        await bubbleSortByBrightness(circles, 0, 0, 1)
+        await bubbleSort(circles, 0, 0, 1)
         console.log(isDoneSorting)
         sorted = true;
         numberOfOperations = 0;
