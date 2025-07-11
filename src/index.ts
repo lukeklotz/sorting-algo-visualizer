@@ -1,13 +1,17 @@
+import { CircleContainer } from './circle-container'
 const circleContainer = document.getElementById('circle-container');
 const shuffleButton = document.getElementById('shuffle-button');
 const selectionSortButton = document.getElementById("selection-sort");
 const bubbleSortButton = document.getElementById("bubble-sort");
 const numberOfOperationsElement = document.getElementById('number-of-operations');
 
-let circles = [];
-let numberOfOperations = 0;
+console.log("test");
+const container = new CircleContainer('circle-container');
+container.populateContainer();
 
-let isDoneSorting = false;
+//let circles: HTMLDivElement = [];
+let numberOfOperations = 0;
+let isDoneSorting: boolean = false;
 let sorted = false;
 
 function updateNumberOfOperations() {
@@ -16,27 +20,23 @@ function updateNumberOfOperations() {
         numberOfOperationsElement.innerText = numberOfOperations.toString();
     }
 }
-
+/*
 function createCircle() {
     const circle = document.createElement('div');
-    circle.className = 'circle';
-    circle.style.borderRadius = '50%'; // Makes the div a circle
-    circle.style.margin = '0px'; // No margin
-   
     const brightness = Math.floor(Math.random() * (80) + 10);
     const hue = 200;  
-    
-    circle.style.backgroundColor = `hsl(${hue}, 5%, ${brightness}%)`;
 
+    circle.className = 'circle';
+    circle.style.borderRadius = '50%'; 
+    circle.style.margin = '0px'; 
+    circle.style.backgroundColor = `hsl(${hue}, 5%, ${brightness}%)`;
     circle.dataset.brightness = brightness.toString();
 
-    
     if (circle.style.height == circle.style.width) {
         return circle;
     }
     return null;
 }
-
 async function bubbleSort(circles, i, j, delay_ms) {
 
     if (circleContainer == null){
@@ -112,11 +112,12 @@ async function selectionSortByBrightness(circles, i, delay_ms) {
     // Continue with the next iteration
     await selectionSortByBrightness(circles, i + 1, delay_ms);
 }
-
+/*
 function sleep(delay_ms) {
     return new Promise(resolve => setTimeout(resolve, delay_ms));
 }
 
+/*
 async function appendCircleWithDelay(circle, delay) {
     
     await sleep(delay); // Wait for the specified delay
@@ -147,7 +148,6 @@ async function shuffleCircles(totalCircles, circles){
             circles[i].dataset.brightness = brightness;
         }
 }
-
 async function fillScreenWithCircles(circles) {
 
     if (circleContainer === null) {
@@ -177,8 +177,7 @@ async function fillScreenWithCircles(circles) {
             await appendCircleWithDelay(circle, 10);
     } 
 }
-
-fillScreenWithCircles(circles);
+*/
 
 if(shuffleButton){
     shuffleButton.addEventListener('click', async() => {
@@ -186,14 +185,14 @@ if(shuffleButton){
             alert("not done sorting!!")
         }
         else if(isDoneSorting && sorted){ 
-            let totalCircles = circles.length
+            let totalCircles = container.circles.length
             numberOfOperations = 0;
-            await shuffleCircles(totalCircles, circles)
+            await container.shuffle();
             sorted = false;
         }
     })
 }
-
+/*
 if(selectionSortButton){
     selectionSortButton.addEventListener('click', async() => {
         if(sorted){
@@ -224,10 +223,10 @@ if(bubbleSortButton){
         }
     });
 }
-
+*/
 
 // Recalculate on window resize to keep circles perfectly fitted
 window.addEventListener('resize', () => {
     console.log('Window resized to:', window.innerWidth, window.innerHeight);
-    fillScreenWithCircles(circles);
+    container.populateContainer();
 });
