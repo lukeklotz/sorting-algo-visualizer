@@ -1,4 +1,5 @@
 import { CircleContainer } from './circle-container'
+import { Sort } from './sort'
 const circleContainer = document.getElementById('circle-container');
 const shuffleButton = document.getElementById('shuffle-button');
 const selectionSortButton = document.getElementById("selection-sort");
@@ -207,6 +208,8 @@ if(selectionSortButton){
         }
     });
 }
+
+*/
 if(bubbleSortButton){
     bubbleSortButton.addEventListener('click', async() => {
         if(sorted){
@@ -214,16 +217,12 @@ if(bubbleSortButton){
         } else {
 
         isDoneSorting = false;
-        console.log(isDoneSorting)
-        await bubbleSort(circles, 0, 0, 1)
-        console.log(isDoneSorting)
+        container.bubbleSort();
         sorted = true;
         numberOfOperations = 0;
-
         }
     });
 }
-*/
 
 // Recalculate on window resize to keep circles perfectly fitted
 window.addEventListener('resize', () => {

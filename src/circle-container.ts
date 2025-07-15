@@ -9,7 +9,6 @@ export class CircleContainer {
     containerSize: DOMRect;
     containerWidth: number;
     containerHeight: number;
-    delay: number;
     circleSize: number;
 
     constructor(containerId: string) {
@@ -26,17 +25,14 @@ export class CircleContainer {
         this.columns = Math.floor(this.containerWidth / this.circleSize);
         this.rows = Math.floor(this.containerHeight / this.circleSize);
         this.totalCircles = this.columns * this.rows;
-        this.delay = 1;
     }
 
-    async sleep() {
-        return new Promise(resolve => setTimeout(resolve, this.delay));
+    async sleep(delay: number) {
+        return new Promise(resolve => setTimeout(resolve, delay));
     }
     
     async populateContainer() {
 
-        console.log("populate container called");
-        console.log(this.totalCircles)
         if (!this.container) {
             throw new Error("Error populating the container. Container is null.");
         }
@@ -64,4 +60,28 @@ export class CircleContainer {
             await this.sleep();
         }
     } 
+
+    getList(){
+        return this.circles;
+    }
+
+    async bubbleSort() {
+        const n = this.circles.length;
+        for(let i = 0; i < n - 1; ++i){
+            for(let j = 0; j < n - i - 1; j++) {
+                if(this.circles[j].brightness < this.circles[j + 1].brightness) {
+                    const temp = this.circles[j];
+                    this.circles[j] = this.circles[j + 1];
+                    this.circles[j + 1] = temp;
+                    
+                    this.container.innerHTML = '';
+                    for (const circle of this.circles) {
+                        this.container.appendChild(circle.element);
+                    }
+
+                    await this.sleep(1);
+                }
+            }
+        }
+    }    
 }
